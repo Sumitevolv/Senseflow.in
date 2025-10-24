@@ -1,0 +1,1923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SenseFlow.in - Smart Water Tank Management Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1fbae0;
+            --primary-dark: #0c9fc0;
+            --secondary: #00aeff;
+            --accent: #00ff9d;
+            --text: #1a1a1a;
+            --text-light: #666;
+            --bg: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --card-border: rgba(0, 0, 0, 0.1);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 30px 60px rgba(31, 186, 224, 0.15);
+            --transition: all 0.3s ease;
+            --radius: 20px;
+        }
+
+        [data-theme="dark"] {
+            --text: #ffffff;
+            --text-light: #b0b0b0;
+            --bg: #121212;
+            --bg-secondary: #1e1e1e;
+            --card-bg: rgba(30, 30, 30, 0.95);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 30px 60px rgba(31, 186, 224, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+            overflow-x: hidden;
+            transition: background-color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(31, 186, 224, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(0, 174, 255, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(0, 102, 204, 0.08) 0%, transparent 50%);
+            z-index: -1;
+            animation: pulse 10s ease-in-out infinite;
+        }
+
+        [data-theme="dark"] .animated-bg {
+            background: radial-gradient(circle at 20% 50%, rgba(31, 186, 224, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(0, 174, 255, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(0, 102, 204, 0.05) 0%, transparent 50%);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Header with Glassmorphism */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        [data-theme="dark"] header {
+            background: rgba(30, 30, 30, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-container img {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text) 0%, var(--secondary) 50%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(31, 186, 224, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-link:hover {
+            background: rgba(31, 186, 224, 0.1);
+            color: var(--primary);
+            box-shadow: 0 0 30px rgba(31, 186, 224, 0.2);
+        }
+
+        .nav-link:hover:before {
+            left: 100%;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(31, 186, 224, 0.1);
+            transform: rotate(30deg);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text) 0%, var(--secondary) 50%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            color: var(--text-light);
+            margin-bottom: 2.5rem;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 10px 30px rgba(31, 186, 224, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(31, 186, 224, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(31, 186, 224, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(31, 186, 224, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(31, 186, 224, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(31, 186, 224, 0.2);
+        }
+
+        /* Sections */
+        section {
+            position: relative;
+            z-index: 1;
+            padding: 6rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            color: var(--text);
+            font-weight: 700;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--text), var(--secondary));
+            border-radius: 2px;
+        }
+
+        /* About Section */
+        .about {
+            background: var(--bg-secondary);
+        }
+
+        .about-content {
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .about-text p {
+            margin-bottom: 2rem;
+            font-size: 1.3rem;
+            line-height: 1.9;
+            color: var(--text-light);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .about-text p:first-of-type {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .about-text p:nth-of-type(2) {
+            font-size: 1.35rem;
+            font-weight: 400;
+            color: var(--text);
+            font-style: italic;
+        }
+
+        .about-text p:last-of-type {
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+
+        /* Features Grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--card-border);
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .feature-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 174, 255, 0.05), rgba(0, 255, 157, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(31, 186, 224, 0.3);
+        }
+
+        .feature-card:hover:before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .feature-card h3 {
+            color: var(--text);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* Products Section */
+        .products {
+            background: var(--bg);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius);
+            border: 1px solid var(--card-border);
+            overflow: hidden;
+            position: relative;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .product-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .product-card:nth-child(1) { animation-delay: 0.1s; }
+        .product-card:nth-child(2) { animation-delay: 0.2s; }
+        .product-card:nth-child(3) { animation-delay: 0.3s; }
+        .product-card:nth-child(4) { animation-delay: 0.4s; }
+        .product-card:nth-child(5) { animation-delay: 0.5s; }
+        .product-card:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-card:hover {
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(31, 186, 224, 0.3);
+        }
+
+        .product-images {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        [data-theme="dark"] .product-images {
+            background: linear-gradient(135deg, #2a2a2a 0%, #1e1e1e 100%);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            display: none;
+            transition: transform 0.3s ease;
+            padding: 15px;
+        }
+
+        .product-image.active {
+            display: block;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.02);
+        }
+
+        .image-nav {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] .image-nav {
+            background: rgba(30, 30, 30, 0.9);
+        }
+
+        .image-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .image-dot {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .image-dot.active {
+            background: var(--primary);
+            box-shadow: 0 0 10px rgba(0, 102, 204, 0.5);
+            transform: scale(1.2);
+        }
+
+        .image-dot:hover {
+            background: rgba(0, 102, 204, 0.7);
+            transform: scale(1.1);
+        }
+
+        .product-content {
+            padding: 2rem;
+        }
+
+        .product-content h3 {
+            color: var(--text);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .product-content p {
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        .product-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--card-border);
+            position: relative;
+            padding-left: 30px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .product-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .youtube-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #ff0000, #cc0000);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .youtube-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3);
+        }
+
+        .view-more-container {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .view-more-btn {
+            position: relative;
+            overflow: hidden;
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(31, 186, 224, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(31, 186, 224, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(31, 186, 224, 0);
+            }
+        }
+
+        /* Quote Section */
+        .quote {
+            background: var(--bg-secondary);
+            position: relative;
+        }
+
+        .quote:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 174, 255, 0.05), rgba(0, 255, 157, 0.05));
+            z-index: -1;
+        }
+
+        .quote-form {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            padding: 3rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--card-border);
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            font-size: 1rem;
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .form-group input,
+        [data-theme="dark"] .form-group select,
+        [data-theme="dark"] .form-group textarea {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 102, 204, 0.2);
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        [data-theme="dark"] .form-group input:focus,
+        [data-theme="dark"] .form-group select:focus,
+        [data-theme="dark"] .form-group textarea:focus {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--text-light);
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        /* Form validation styles */
+        .form-group input.error,
+        .form-group select.error,
+        .form-group textarea.error {
+            border-color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .error-text {
+            color: #ff6b6b;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .error-text.show {
+            display: block;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--text), var(--secondary));
+            color: #ffffff;
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .submit-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(31, 186, 224, 0.4);
+        }
+
+        .submit-btn:hover:not(:disabled):before {
+            left: 100%;
+        }
+
+        .required {
+            color: #ff6b6b;
+        }
+
+        /* Success/Error Messages */
+        .success-message {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: #ffffff;
+            padding: 1.2rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            display: none;
+            font-weight: 500;
+            text-align: center;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            color: #ffffff;
+            padding: 1.2rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            display: none;
+            font-weight: 500;
+            text-align: center;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Contact Section */
+        .contact {
+            background: var(--bg);
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            width: 100%;
+        }
+
+        .contact-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 2rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--card-border);
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            user-select: text;
+        }
+
+        .contact-method {
+            min-height: 150px;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .contact-card h3 {
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+        }
+
+        .contact-item {
+            margin-bottom: 1rem;
+        }
+
+        .contact-item p {
+            margin-bottom: 0.8rem;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .contact-link {
+            display: inline-block;
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            background: rgba(0, 102, 204, 0.1);
+            margin-top: 0.5rem;
+            cursor: pointer;
+            user-select: text;
+        }
+
+        .contact-link:hover {
+            color: #ffffff;
+            background: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 102, 204, 0.3);
+        }
+
+        .map-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(20px);
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] footer {
+            background: rgba(10, 10, 10, 0.95);
+        }
+
+        /* MV Solutions Section */
+        .mv-solutions {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .mv-solutions h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .mv-solutions p {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .explore-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            font-size: 0.9rem;
+        }
+
+        .explore-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: rgba(0, 174, 255, 0.05);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating-element:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .floating-element:nth-child(2) { top: 20%; right: 10%; animation-delay: 2s; }
+        .floating-element:nth-child(3) { bottom: 10%; left: 20%; animation-delay: 4s; }
+
+        /* Scroll Animation for Sections */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .fade-in-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.8s ease-out;
+        }
+
+        .scale-in.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Staggered animation for feature cards */
+        .feature-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-card:nth-child(1) { transition-delay: 0.1s; }
+        .feature-card:nth-child(2) { transition-delay: 0.2s; }
+        .feature-card:nth-child(3) { transition-delay: 0.3s; }
+        .feature-card:nth-child(4) { transition-delay: 0.4s; }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--card-bg);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 1rem;
+                border-radius: 0 0 var(--radius) var(--radius);
+                box-shadow: var(--shadow);
+                border: 1px solid var(--card-border);
+                border-top: none;
+                gap: 0.5rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .quote-form {
+                padding: 2rem;
+            }
+
+            .contact-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-card {
+                padding: 1.5rem;
+            }
+            
+            .contact-method {
+                min-height: auto;
+            }
+
+            section {
+                padding: 4rem 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .feature-card,
+            .product-card,
+            .contact-card {
+                padding: 1.5rem;
+            }
+
+            .product-images {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    
+    <!-- Floating Elements -->
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <img src="logo_0716_1827_5ae15c.webp" alt="SenseFlow Logo" id="companyLogo">
+                    <div class="logo-text">SenseFlow.in</div>
+                </div>
+                <div class="nav-links" id="navLinks">
+                    <a href="#home" class="nav-link">Home</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#products" class="nav-link">Products</a>
+                    <a href="#quote" class="nav-link">Get Quote</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="hero fade-in-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Smart Water Tank Management Solutions</h1>
+                <p>Transform your water management with our 4th generation smart sensors and controllers. Prevent overflows, save water, and enjoy complete peace of mind with real-time monitoring and control.</p>
+                <div class="hero-buttons">
+                    <a href="#products" class="btn btn-primary">
+                        <i class="fas fa-box-open"></i> Explore Products
+                    </a>
+                    <a href="#quote" class="btn btn-secondary">
+                        <i class="fas fa-comment-dollar"></i> Get Quote
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about fade-in-section">
+        <div class="container">
+            <h2 class="section-title">About SenseFlow</h2>
+            <div class="about-content">
+                <div class="about-text slide-in-left">
+                    <p>Meet the SenseFlow range — powered by 4th generation smart sensors and controllers. From auto pump control to live water level updates, SenseFlow makes water tank management easy and reliable.</p>
+                    <p>No more overflows, dry tanks, or manual checks. Just relax, save water, and enjoy smart living — the SenseFlow way.</p>
+                    <p>We support both contact and contactless sensors, allowing flexibility for domestic, commercial, and industrial use cases.</p>
+                </div>
+            </div>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <span class="feature-icon">📱</span>
+                    <h3>Mobile App Control</h3>
+                    <p>Monitor and control your water tanks from anywhere with our secure mobile app featuring real-time alerts and remote access</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🔧</span>
+                    <h3>Easy Installation</h3>
+                    <p>Quick setup with minimal wiring and user-friendly configuration. Get your system running in minutes, not hours</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">⚙️</span>
+                    <h3>Customizable Systems</h3>
+                    <p>Support for multi-tank and multi-pump systems for any scale - from homes to industrial complexes</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🤖</span>
+                    <h3>Smart Automation</h3>
+                    <p>AI-powered automatic pump control to prevent overflow, dry running, and optimize water usage efficiency</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="products fade-in-section">
+        <div class="container">
+            <h2 class="section-title">Our Products</h2>
+            <div class="products-grid" id="productsGrid">
+                <!-- Product 1 -->
+                <div class="product-card visible">
+                    <div class="product-images">
+                        <img src="img_0716_1649_71d0d1.webp" alt="SenseFlow Smart Plug Air" class="product-image active">
+                        <img src="img_0716_1653_ac99f0.webp" alt="SenseFlow Smart Plug Air" class="product-image">
+                        <img src="img_0717_1518_b3afe1.webp" alt="SenseFlow Smart Plug Air" class="product-image">
+                        <div class="image-nav">
+                            <span class="image-dot active" data-index="0"></span>
+                            <span class="image-dot" data-index="1"></span>
+                            <span class="image-dot" data-index="2"></span>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3>SenseFlow Smart Plug Air</h3>
+                        <p>Real-time water level monitoring and controlling with wireless connectivity and mobile app integration. Features 4th generation sensors for precise measurements.</p>
+                        <ul class="product-features">
+                            <li>Real-time water level monitoring with 4th gen sensors</li>
+                            <li>Mobile app notifications and alerts</li>
+                            <li>IoT based wireless connectivity</li>
+                            <li>Support 10 Amp and 16 Amp Motor</li>
+                            <li>IP65 waterproof rated sensor</li>
+                            <li>Dry Run protection</li>
+                            <li>No maintenance required</li>
+                        </ul>
+                        <a href="#" class="youtube-link">🎥 Watch Demo</a>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card visible">
+                    <div class="product-images">
+                        <img src="img_0716_1809_87313c.webp" alt="SenseFlow Smart Plug Direct" class="product-image active">
+                        <img src="img_0716_1809_ae5075.webp" alt="SenseFlow Smart Plug Direct" class="product-image">
+                        <img src="img_0716_1810_c75e8c.webp" alt="SenseFlow Smart Plug Direct" class="product-image">
+                        <img src="img_0717_1518_3ecc42.webp" alt="SenseFlow Smart Plug Direct" class="product-image">
+                        <div class="image-nav">
+                            <span class="image-dot active" data-index="0"></span>
+                            <span class="image-dot" data-index="1"></span>
+                            <span class="image-dot" data-index="2"></span>
+                            <span class="image-dot" data-index="3"></span>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3>SenseFlow Smart Plug Direct</h3>
+                        <p>Affordable wired water level monitoring and control with mobile app support and 4th generation precision sensors.</p>
+                        <ul class="product-features">
+                            <li>Real-time water level monitoring with 4th gen sensors</li>
+                            <li>Mobile app notifications and alerts</li>
+                            <li>Support 10 Amp and 16 Amp Motor</li>
+                            <li>IP65 waterproof rated sensor</li>
+                            <li>Dry Run protection</li>
+                        </ul>
+                        <a href="#" class="youtube-link">🎥 Watch Demo</a>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card visible">
+                    <div class="product-images">
+                        <img src="img_0716_1819_bf84f0.webp" alt="SenseFlow Level Alert Display" class="product-image active">
+                        <img src="img_0716_1819_fd1dcf.webp" alt="SenseFlow Level Alert Display" class="product-image">
+                        <img src="img_0717_1518_17f80b.webp" alt="SenseFlow Level Alert Display" class="product-image">
+                        <div class="image-nav">
+                            <span class="image-dot active" data-index="0"></span>
+                            <span class="image-dot" data-index="1"></span>
+                            <span class="image-dot" data-index="2"></span>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3>SenseFlow Level Alert Display</h3>
+                        <p>A compact and reliable tank monitoring device with real-time level display and built-in alerts. Designed for homes, buildings, and industrial setups.</p>
+                        <ul class="product-features">
+                            <li>Real-time tank level display</li>
+                            <li>Supports overhead, underground, and sump tanks</li>
+                            <li>Built-in buzzer/alarm for customized tank level</li>
+                            <li>Wall-mount or table-top design</li>
+                            <li>Power efficient and easy installation</li>
+                        </ul>
+                        <a href="#" class="youtube-link">🎥 Watch Demo</a>
+                    </div>
+                </div>
+
+                <!-- Product 4 (Hidden initially) -->
+                <div class="product-card">
+                    <div class="product-images">
+                        <img src="https://via.placeholder.com/700x400/ddd/999?text=SenseFlow+Pro+Sensor" alt="SenseFlow Pro Sensor" class="product-image active">
+                        <div class="image-nav">
+                            <span class="image-dot active" data-index="0"></span>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3>SenseFlow Pro Sensor</h3>
+                        <p>Advanced industrial-grade sensor with extended range and enhanced durability for commercial and industrial applications.</p>
+                        <ul class="product-features">
+                            <li>Extended range up to 50 meters</li>
+                            <li>Industrial-grade durability</li>
+                            <li>Multi-tank support</li>
+                            <li>Advanced analytics and reporting</li>
+                            <li>Cloud integration for data storage</li>
+                        </ul>
+                        <a href="#" class="youtube-link">🎥 Watch Demo</a>
+                    </div>
+                </div>
+
+                <!-- Product 5 (Hidden initially) -->
+                <div class="product-card">
+                    <div class="product-images">
+                        <img src="https://via.placeholder.com/700x400/ddd/999?text=SenseFlow+Mobile+App" alt="SenseFlow Mobile App" class="product-image active">
+                        <div class="image-nav">
+                            <span class="image-dot active" data-index="0"></span>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3>SenseFlow Mobile App</h3>
+                        <p>Companion mobile application for monitoring and controlling your SenseFlow devices from anywhere.</p>
+                        <ul class="product-features">
+                            <li>Real-time water level monitoring</li>
+                            <li>Push notifications for alerts</li>
+                            <li>Remote pump control</li>
+                            <li>Usage analytics and reports</li>
+                            <li>Multi-device support</li>
+                        </ul>
+                        <a href="#" class="youtube-link">🎥 Watch Demo</a>
+                    </div>
+                </div>
+
+                <!-- Product 6 (Hidden initially) -->
+                <div class="product-card">
+                    <div class="product-images">
+                        <img src="https://via.placeholder.com/700x400/ddd/999?text=SenseFlow+Industrial+Kit" alt="SenseFlow Industrial Kit" class="product-image active">
+                        <div class="image-nav">
+                            <span class="image-dot active" data-index="0"></span>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3>SenseFlow Industrial Kit</h3>
+                        <p>Complete solution for industrial water management with multiple sensors and centralized control system.</p>
+                        <ul class="product-features">
+                            <li>Multi-sensor support (up to 10 tanks)</li>
+                            <li>Centralized control panel</li>
+                            <li>Industrial-grade components</li>
+                            <li>Advanced automation features</li>
+                            <li>24/7 technical support</li>
+                        </ul>
+                        <a href="#" class="youtube-link">🎥 Watch Demo</a>
+                    </div>
+                </div>
+            </div>
+            <div class="view-more-container">
+                <button class="btn btn-primary view-more-btn" id="viewMoreBtn">
+                    <i class="fas fa-eye"></i> View More Products
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="quote" class="quote fade-in-section">
+        <div class="container">
+            <h2 class="section-title">Get a Quote</h2>
+            <form class="quote-form" id="quoteForm">
+                <div class="success-message" id="successMessage">
+                    🎉 Thank you! Your quote request has been submitted successfully. We'll contact you soon!
+                </div>
+                <div class="error-message" id="errorMessage">
+                    ⚠️ There was an error submitting your request. Please try again or contact us directly.
+                </div>
+                
+                <div class="form-group">
+                    <label for="name">Name <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your full name">
+                    <div class="error-text" id="nameError">Please enter your full name</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email address">
+                    <div class="error-text" id="emailError">Please enter a valid email address</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number (10 digits)">
+                    <div class="error-text" id="phoneError">Please enter a valid 10-digit phone number</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="company">Company</label>
+                    <input type="text" id="company" name="company" placeholder="Enter your company name (optional)">
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Category Interest <span class="required">*</span></label>
+                    <select id="category" name="category" required>
+                        <option value="">Select a category</option>
+                        <option value="Smart Water Tank Automation">Smart Water Tank Automation</option>
+                        <option value="Monitoring solutions">Monitoring solutions</option>
+                        <option value="Control solutions">Control solutions</option>
+                        <option value="customization">Customization</option>
+                    </select>
+                    <div class="error-text" id="categoryError">Please select a category</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message <span class="required">*</span></label>
+                    <textarea id="message" name="message" required placeholder="Tell us about your requirements and how we can help you..."></textarea>
+                    <div class="error-text" id="messageError">Please enter your message (minimum 10 characters)</div>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">Submit Request</button>
+            </form>
+        </div>
+    </section>
+
+    <section id="contact" class="contact fade-in-section">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-grid">
+                <!-- First Row - Contact Methods -->
+                <div class="contact-row">
+                    <div class="contact-card contact-method">
+                        <h3><span class="contact-icon">📧</span> Email</h3>
+                        <div class="contact-item">
+                            <a href="mailto:info@senseflow.in" class="contact-link" target="_blank">
+                                info@senseflow.in
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-card contact-method">
+                        <h3><span class="contact-icon">📞</span> Phone</h3>
+                        <div class="contact-item">
+                            <a href="tel:+918097412355" class="contact-link" target="_blank">
+                                +918097412355
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-card contact-method">
+                        <h3><span class="contact-icon">💬</span> WhatsApp</h3>
+                        <div class="contact-item">
+                            <a href="https://mvsolutions.netlify.app/" 
+                               class="contact-link" 
+                               target="_blank" 
+                               rel="noopener noreferrer">
+                                Chat Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Second Row - Locations & Hours -->
+                <div class="contact-row">
+                    <div class="contact-card">
+                        <h3><span class="contact-icon">🏢</span> Main Office</h3>
+                        <div class="contact-item">
+                            <p>Gorai, Borivali West, Mumbai</p>
+                            <a href="https://maps.app.goo.gl/v1k5Wru9Pzm8Hgnc9" 
+                               class="contact-link map-link" 
+                               target="_blank" 
+                               rel="noopener noreferrer">
+                                View on Map
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <h3><span class="contact-icon">🏭</span> Service Center</h3>
+                        <div class="contact-item">
+                            <p>Marve Rd, Malad West, Mumbai</p>
+                            <a href="https://maps.app.goo.gl/WTRKNcYZAn6FvdDq9" 
+                               class="contact-link map-link" 
+                               target="_blank" 
+                               rel="noopener noreferrer">
+                                View on Map
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <h3><span class="contact-icon">🕒</span> Business Hours</h3>
+                        <div class="contact-item">
+                            <p>Mon-Fri: 9AM - 6PM</p>
+                            <p>Sat: 10AM - 4PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mv-solutions">
+        <div class="container">
+            <h3>Explore More Tech Solutions</h3>
+            <p>Discover other innovative products and services by MV Solutions</p>
+            <a href="https://mvsolutions.netlify.app/" target="_blank" class="explore-btn">
+                🚀 Visit MV Solutions Website
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 SenseFlow.in by MV Solutions Company. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Management
+        function initTheme() {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            // Check for saved theme preference or default to 'light'
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            // Update icon based on current theme
+            if (savedTheme === 'dark') {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+            
+            // Toggle theme on button click
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                // Update icon
+                if (newTheme === 'dark') {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                }
+            });
+        }
+
+        // Mobile Menu Toggle
+        function initMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
+            
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                const icon = mobileMenuBtn.querySelector('i');
+                
+                if (navLinks.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
+            // Close mobile menu when clicking on a link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+                    mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+                });
+            });
+        }
+
+        // Enhanced WebP image loading function
+        function loadImageWithWebP(imgElement, src) {
+            // Create a new image to test loading
+            const testImage = new Image();
+            
+            testImage.onload = function() {
+                imgElement.src = src;
+                imgElement.classList.add('loaded');
+            };
+            
+            testImage.onerror = function() {
+                // If WebP fails, try to convert extension or use placeholder
+                const fallbackSrc = src.replace('.webp', '.jpg');
+                if (fallbackSrc !== src) {
+                    const fallbackTest = new Image();
+                    fallbackTest.onload = function() {
+                        imgElement.src = fallbackSrc;
+                        imgElement.classList.add('loaded');
+                    };
+                    fallbackTest.onerror = function() {
+                        // Use placeholder if all else fails
+                        imgElement.src = 'https://via.placeholder.com/700x400/ddd/999?text=Image+Not+Found';
+                        imgElement.classList.add('loaded');
+                    };
+                    fallbackTest.src = fallbackSrc;
+                } else {
+                    imgElement.src = 'https://via.placeholder.com/700x400/ddd/999?text=Image+Not+Found';
+                    imgElement.classList.add('loaded');
+                }
+            };
+            
+            testImage.src = src;
+        }
+
+        // Product Image Navigation
+        function initProductImageNavigation() {
+            document.querySelectorAll('.image-nav').forEach(nav => {
+                nav.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('image-dot')) {
+                        const imageIndex = parseInt(e.target.dataset.index);
+                        const productCard = e.target.closest('.product-card');
+                        const productImages = productCard.querySelectorAll('.product-image');
+                        const dots = productCard.querySelectorAll('.image-dot');
+                        
+                        productImages.forEach((img, index) => {
+                            img.classList.toggle('active', index === imageIndex);
+                        });
+                        
+                        dots.forEach((dot, index) => {
+                            dot.classList.toggle('active', index === imageIndex);
+                        });
+                    }
+                });
+            });
+            
+            // Enhanced image loading with WebP support
+            document.querySelectorAll('.product-image').forEach(img => {
+                loadImageWithWebP(img, img.src);
+            });
+        }
+
+        // View More Products Functionality
+        function initViewMoreProducts() {
+            const viewMoreBtn = document.getElementById('viewMoreBtn');
+            const productCards = document.querySelectorAll('.product-card');
+            let showAll = false;
+            
+            // Initially hide all cards except the first 3
+            productCards.forEach((card, index) => {
+                if (index >= 3) {
+                    card.style.display = 'none';
+                }
+            });
+            
+            viewMoreBtn.addEventListener('click', () => {
+                showAll = !showAll;
+                
+                if (showAll) {
+                    // Show all product cards with animation
+                    productCards.forEach((card, index) => {
+                        if (index >= 3) {
+                            card.style.display = 'block';
+                            // Add a small delay for staggered animation
+                            setTimeout(() => {
+                                card.classList.add('visible');
+                            }, (index - 3) * 100);
+                        }
+                    });
+                    viewMoreBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Show Less';
+                } else {
+                    // Hide cards beyond the first 3
+                    productCards.forEach((card, index) => {
+                        if (index >= 3) {
+                            card.classList.remove('visible');
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 300);
+                        }
+                    });
+                    viewMoreBtn.innerHTML = '<i class="fas fa-eye"></i> View More Products';
+                }
+            });
+        }
+
+        // Form validation and submission
+        function initFormSubmission() {
+            const form = document.getElementById('quoteForm');
+            
+            // Validation Functions
+            function validateEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            function validatePhone(phone) {
+                const cleanPhone = phone.replace(/\D/g, '');
+                return cleanPhone.length === 10;
+            }
+
+            function validateName(name) {
+                return name.trim().length >= 2;
+            }
+
+            function validateMessage(message) {
+                return message.trim().length >= 10;
+            }
+
+            function showError(fieldId, errorId, message) {
+                const field = document.getElementById(fieldId);
+                const errorElement = document.getElementById(errorId);
+                field.classList.add('error');
+                errorElement.textContent = message;
+                errorElement.classList.add('show');
+            }
+
+            function hideError(fieldId, errorId) {
+                const field = document.getElementById(fieldId);
+                const errorElement = document.getElementById(errorId);
+                field.classList.remove('error');
+                errorElement.classList.remove('show');
+            }
+
+            function showMessage(elementId, show = true) {
+                const element = document.getElementById(elementId);
+                element.style.display = show ? 'block' : 'none';
+            }
+
+            function validateForm() {
+                let isValid = true;
+                
+                const name = document.getElementById('name').value;
+                if (!validateName(name)) {
+                    showError('name', 'nameError', 'Please enter your full name (minimum 2 characters)');
+                    isValid = false;
+                } else {
+                    hideError('name', 'nameError');
+                }
+                
+                const email = document.getElementById('email').value;
+                if (!validateEmail(email)) {
+                    showError('email', 'emailError', 'Please enter a valid email address');
+                    isValid = false;
+                } else {
+                    hideError('email', 'emailError');
+                }
+                
+                const phone = document.getElementById('phone').value;
+                if (!validatePhone(phone)) {
+                    showError('phone', 'phoneError', 'Please enter a valid 10-digit phone number');
+                    isValid = false;
+                } else {
+                    hideError('phone', 'phoneError');
+                }
+                
+                const category = document.getElementById('category').value;
+                if (!category) {
+                    showError('category', 'categoryError', 'Please select a category');
+                    isValid = false;
+                } else {
+                    hideError('category', 'categoryError');
+                }
+                
+                const message = document.getElementById('message').value;
+                if (!validateMessage(message)) {
+                    showError('message', 'messageError', 'Please enter your message (minimum 10 characters)');
+                    isValid = false;
+                } else {
+                    hideError('message', 'messageError');
+                }
+                
+                return isValid;
+            }
+
+            // Form submission
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                showMessage('successMessage', false);
+                showMessage('errorMessage', false);
+                
+                if (!validateForm()) {
+                    return;
+                }
+                
+                const formData = new FormData(event.target);
+                const data = {
+                    timestamp: new Date().toISOString(),
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    company: formData.get('company') || 'Not provided',
+                    category: formData.get('category') || 'Not specified',
+                    message: formData.get('message')
+                };
+                
+                const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzrKu-pQPPURbrCNYm1WJGJb7UdkAuHcNip-3VkGYpjqXfmHAiDQM7RCYsC6iAS8CKCqw/exec';
+                
+                const submitBtn = event.target.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = 'Sending...';
+                submitBtn.disabled = true;
+                
+                fetch(GOOGLE_SHEETS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                .then(() => {
+                    showMessage('successMessage', true);
+                    event.target.reset();
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    setTimeout(() => showMessage('successMessage', false), 8000);
+                })
+                .catch((error) => {
+                    showMessage('errorMessage', true);
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    setTimeout(() => showMessage('errorMessage', false), 8000);
+                });
+            });
+
+            // Real-time validation
+            ['email', 'phone', 'name', 'message'].forEach(field => {
+                document.getElementById(field).addEventListener('input', function() {
+                    const value = this.value;
+                    if (value) {
+                        if (field === 'email' && !validateEmail(value)) {
+                            showError(field, field + 'Error', 'Please enter a valid email address');
+                        } else if (field === 'phone' && !validatePhone(value)) {
+                            showError(field, field + 'Error', 'Please enter a valid 10-digit phone number');
+                        } else if (field === 'name' && !validateName(value)) {
+                            showError(field, field + 'Error', 'Please enter your full name (minimum 2 characters)');
+                        } else if (field === 'message' && !validateMessage(value)) {
+                            showError(field, field + 'Error', 'Please enter your message (minimum 10 characters)');
+                        } else {
+                            hideError(field, field + 'Error');
+                        }
+                    }
+                });
+            });
+        }
+
+        // Smooth scrolling
+        function initSmoothScrolling() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        }
+
+        // Scroll animations
+        function initializeScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        
+                        if (entry.target.classList.contains('features')) {
+                            const featureCards = entry.target.querySelectorAll('.feature-card');
+                            featureCards.forEach((card, index) => {
+                                setTimeout(() => card.classList.add('visible'), index * 200);
+                            });
+                        }
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+            document.querySelectorAll('.fade-in-section, .slide-in-left, .slide-in-right, .scale-in').forEach(el => {
+                observer.observe(el);
+            });
+
+            const featuresContainer = document.querySelector('.features');
+            if (featuresContainer) observer.observe(featuresContainer);
+        }
+
+        function setupLogo() {
+            const logoImg = document.getElementById('companyLogo');
+            const logoPlaceholder = document.getElementById('logoPlaceholder');
+            
+            logoImg.onload = function() {
+                logoImg.style.display = 'block';
+                logoPlaceholder.style.display = 'none';
+            };
+            
+            logoImg.onerror = function() {
+                logoImg.style.display = 'none';
+                logoPlaceholder.style.display = 'block';
+            };
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+            initMobileMenu();
+            initProductImageNavigation();
+            initViewMoreProducts();
+            initFormSubmission();
+            initSmoothScrolling();
+            initializeScrollAnimations();
+            setupLogo();
+        });
+    </script>
+</body>
+</html>
