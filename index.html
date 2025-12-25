@@ -24,6 +24,8 @@
             --shadow-hover: 0 30px 60px rgba(31, 186, 224, 0.15);
             --transition: all 0.3s ease;
             --radius: 20px;
+            --whatsapp-green: #25D366;
+            --whatsapp-green-dark: #128C7E;
         }
 
         [data-theme="dark"] {
@@ -59,7 +61,346 @@
             padding: 0 20px;
         }
 
-        /* Animated Background */
+        /* WhatsApp Chat Widget Styles */
+        .whatsapp-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .whatsapp-button {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--whatsapp-green), var(--whatsapp-green-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.6);
+        }
+
+        .whatsapp-button i {
+            font-size: 30px;
+            color: white;
+        }
+
+        .whatsapp-button .notification {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4757;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7);
+            }
+            70% {
+                transform: scale(1.1);
+                box-shadow: 0 0 0 10px rgba(255, 71, 87, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 71, 87, 0);
+            }
+        }
+
+        .whatsapp-chat {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius);
+            border: 1px solid var(--card-border);
+            box-shadow: var(--shadow-hover);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px) scale(0.9);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 1001;
+        }
+
+        .whatsapp-chat.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--whatsapp-green), var(--whatsapp-green-dark));
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chat-header i {
+            font-size: 24px;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .chat-header .status {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-top: 3px;
+        }
+
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 20px;
+            background: var(--bg-secondary);
+        }
+
+        .message {
+            margin-bottom: 15px;
+            max-width: 80%;
+            clear: both;
+        }
+
+        .message.bot {
+            float: left;
+        }
+
+        .message.user {
+            float: right;
+        }
+
+        .message-content {
+            padding: 12px 16px;
+            border-radius: 20px;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .message.bot .message-content {
+            background: rgba(37, 211, 102, 0.1);
+            color: var(--text);
+            border-bottom-left-radius: 5px;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, var(--whatsapp-green), var(--whatsapp-green-dark));
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message-time {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .message.bot .message-time {
+            text-align: left;
+        }
+
+        .chat-input {
+            padding: 20px;
+            border-top: 1px solid var(--card-border);
+            background: var(--card-bg);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid var(--card-border);
+            border-radius: 25px;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .chat-input input:focus {
+            border-color: var(--whatsapp-green);
+            box-shadow: 0 0 0 2px rgba(37, 211, 102, 0.2);
+        }
+
+        .send-button {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--whatsapp-green), var(--whatsapp-green-dark));
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .send-button:hover {
+            transform: scale(1.1);
+        }
+
+        .send-button i {
+            font-size: 18px;
+        }
+
+        .chat-intro {
+            text-align: center;
+            padding: 15px;
+            font-size: 13px;
+            color: var(--text-light);
+            background: var(--bg);
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .chat-intro a {
+            color: var(--whatsapp-green);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .chat-intro a:hover {
+            text-decoration: underline;
+        }
+
+        .close-chat {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-chat:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Enhanced Chat Features */
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .quick-reply {
+            padding: 6px 12px;
+            background: rgba(37, 211, 102, 0.1);
+            border: 1px solid rgba(37, 211, 102, 0.3);
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text);
+        }
+
+        .quick-reply:hover {
+            background: rgba(37, 211, 102, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 10px 15px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 20px;
+            width: fit-content;
+            margin-bottom: 15px;
+            float: left;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: var(--whatsapp-green);
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-indicator span:nth-child(1) { animation-delay: 0s; }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+
+        /* Responsive Design for Chat */
+        @media (max-width: 768px) {
+            .whatsapp-widget {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .whatsapp-chat {
+                width: 90vw;
+                max-width: 350px;
+                bottom: 70px;
+                right: 0;
+                left: 0;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .whatsapp-button {
+                width: 55px;
+                height: 55px;
+            }
+
+            .whatsapp-button i {
+                font-size: 26px;
+            }
+
+            .chat-messages {
+                height: 250px;
+            }
+        }
+
+        /* Rest of your existing CSS remains the same... */
         .animated-bg {
             position: fixed;
             top: 0;
@@ -1138,6 +1479,58 @@
     <div class="floating-element"></div>
     <div class="floating-element"></div>
 
+    <!-- WhatsApp Chat Widget -->
+    <div class="whatsapp-widget">
+        <div class="whatsapp-chat" id="whatsappChat">
+            <div class="chat-header">
+                <button class="close-chat" id="closeChat">
+                    <i class="fas fa-times"></i>
+                </button>
+                <i class="fab fa-whatsapp"></i>
+                <div>
+                    <h3>SenseFlow Support</h3>
+                    <div class="status">Typically replies in 5 minutes</div>
+                </div>
+            </div>
+            <div class="chat-intro">
+                Hello! 👋 How can we help you today?
+                <br><small>We're here to answer your questions about our water tank solutions.</small>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    <div class="message-content">
+                        Hello! I'm SenseFlow Assistant. How can I help you today? 😊
+                    </div>
+                    <div class="message-time">10:00 AM</div>
+                </div>
+                <div class="message bot">
+                    <div class="message-content">
+                        You can ask me about:
+                        <div class="quick-replies">
+                            <div class="quick-reply" data-reply="Tell me about your products">Products</div>
+                            <div class="quick-reply" data-reply="I want pricing information">Pricing</div>
+                            <div class="quick-reply" data-reply="How to install the system">Installation</div>
+                            <div class="quick-reply" data-reply="Technical support needed">Support</div>
+                        </div>
+                    </div>
+                    <div class="message-time">10:00 AM</div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <div class="input-group">
+                    <input type="text" id="chatInput" placeholder="Type your message here..." autocomplete="off">
+                    <button class="send-button" id="sendButton">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="whatsapp-button" id="whatsappButton">
+            <i class="fab fa-whatsapp"></i>
+            <div class="notification">1</div>
+        </div>
+    </div>
+
     <header>
         <div class="container">
             <div class="header-content">
@@ -1526,6 +1919,234 @@
     </footer>
 
     <script>
+        // WhatsApp Chat Widget Functionality
+        function initWhatsAppChat() {
+            const whatsappButton = document.getElementById('whatsappButton');
+            const whatsappChat = document.getElementById('whatsappChat');
+            const closeChat = document.getElementById('closeChat');
+            const chatInput = document.getElementById('chatInput');
+            const sendButton = document.getElementById('sendButton');
+            const chatMessages = document.getElementById('chatMessages');
+            const notification = document.querySelector('.notification');
+            
+            let isChatOpen = false;
+            let unreadMessages = 1;
+            
+            // Chat responses database
+            const responses = {
+                greetings: [
+                    "Hello! 👋 How can I assist you with SenseFlow products today?",
+                    "Hi there! Welcome to SenseFlow. What would you like to know?",
+                    "Greetings! I'm here to help you with smart water management solutions."
+                ],
+                products: [
+                    "We offer 3 main products:\n1️⃣ SenseFlow Smart Plug Air (Wireless)\n2️⃣ SenseFlow Smart Plug Direct (Wired)\n3️⃣ SenseFlow Level Alert Display\n\nWhich one interests you most?",
+                    "Our product range includes wireless and wired solutions for all water tank management needs. The Smart Plug Air is our most popular wireless model with IoT connectivity.",
+                    "All our products feature 4th generation sensors, mobile app control, and real-time monitoring. The Level Alert Display is perfect for basic monitoring needs."
+                ],
+                pricing: [
+                    "Pricing varies based on the product and configuration. Basic systems start at ₹2,999, while complete solutions can go up to ₹9,999.\n\nWould you like me to help you choose the right product for your needs?",
+                    "We offer competitive pricing with different packages:\n• Basic: ₹2,999-3,999\n• Standard: ₹4,999-5,999\n• Premium: ₹7,999-9,999\n\nWhich features are most important for you?",
+                    "I can provide exact pricing once I know your requirements. Our products offer great value with features like:\n• Water overflow prevention\n• Dry run protection\n• Mobile app control\n• Real-time alerts"
+                ],
+                installation: [
+                    "Installation is quick and easy! Most customers install it themselves in 15-30 minutes. We provide detailed instructions and video guides.\n\nWould you like installation assistance?",
+                    "Our systems are designed for DIY installation with minimal wiring. We also offer professional installation services in major cities for ₹500-1,000 extra.",
+                    "Installation steps:\n1. Mount the sensor\n2. Connect to power\n3. Download the app\n4. Pair the device\n5. Start monitoring!\n\nWe provide 24/7 support if you need help."
+                ],
+                support: [
+                    "Our technical support team is available 9 AM to 9 PM daily. You can:\n• Call: +91 80974 12355\n• Email: support@senseflow.in\n• WhatsApp: Chat with us here!\n\nWhat specific issue are you facing?",
+                    "For technical support, please describe your issue and I'll help you troubleshoot. Common issues include:\n• App connection problems\n• Sensor calibration\n• Pump control settings\n\nTell me what's happening.",
+                    "We offer comprehensive support including:\n• Phone support\n• Remote troubleshooting\n• On-site service (major cities)\n• Warranty coverage\n\nHow can I assist you today?"
+                ],
+                default: [
+                    "I understand you're interested in SenseFlow. Could you tell me more about what you're looking for?",
+                    "I'd love to help you find the perfect water management solution. What specific features are important to you?",
+                    "Let me know if you have questions about:\n• Product features\n• Pricing\n• Installation\n• Technical specifications\n• After-sales support"
+                ]
+            };
+            
+            // Quick replies suggestions
+            const quickReplies = [
+                "Tell me about your products",
+                "I want pricing information",
+                "How to install the system",
+                "Technical support needed",
+                "Do you offer discounts?",
+                "What's your warranty period?"
+            ];
+            
+            // Toggle chat window
+            function toggleChat() {
+                isChatOpen = !isChatOpen;
+                whatsappChat.classList.toggle('active', isChatOpen);
+                
+                if (isChatOpen) {
+                    // Clear notification when chat opens
+                    notification.textContent = '';
+                    notification.style.display = 'none';
+                    unreadMessages = 0;
+                    
+                    // Focus on input
+                    setTimeout(() => chatInput.focus(), 300);
+                    
+                    // Add welcome message if first time
+                    if (!window.chatOpenedBefore) {
+                        window.chatOpenedBefore = true;
+                        setTimeout(() => {
+                            addBotMessage("Feel free to ask me anything about SenseFlow products, pricing, installation, or support! I'm here to help you make the right choice for your water management needs. 💧");
+                        }, 1000);
+                    }
+                }
+            }
+            
+            // Add message to chat
+            function addMessage(text, isUser = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+                
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                
+                messageDiv.innerHTML = `
+                    <div class="message-content">${text.replace(/\n/g, '<br>')}</div>
+                    <div class="message-time">${timeString}</div>
+                `;
+                
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Add quick replies for bot messages
+                if (!isUser && isChatOpen) {
+                    addQuickReplies();
+                }
+                
+                return messageDiv;
+            }
+            
+            // Add bot message with typing indicator
+            function addBotMessage(text) {
+                // Show typing indicator
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'typing-indicator';
+                typingDiv.innerHTML = '<span></span><span></span><span></span>';
+                chatMessages.appendChild(typingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Remove typing indicator and show message after delay
+                setTimeout(() => {
+                    chatMessages.removeChild(typingDiv);
+                    addMessage(text, false);
+                }, 1500 + Math.random() * 1000);
+            }
+            
+            // Add quick reply buttons
+            function addQuickReplies() {
+                // Remove existing quick replies
+                const existingQuickReplies = document.querySelector('.quick-replies');
+                if (existingQuickReplies && existingQuickReplies.parentElement) {
+                    existingQuickReplies.parentElement.remove();
+                }
+                
+                // Add new quick replies
+                const quickReplyDiv = document.createElement('div');
+                quickReplyDiv.className = 'message bot';
+                quickReplyDiv.innerHTML = `
+                    <div class="message-content">
+                        <div class="quick-replies">
+                            ${quickReplies.map(reply => 
+                                `<div class="quick-reply" data-reply="${reply}">${reply}</div>`
+                            ).join('')}
+                        </div>
+                    </div>
+                    <div class="message-time">${new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</div>
+                `;
+                
+                chatMessages.appendChild(quickReplyDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Add click handlers for quick replies
+                quickReplyDiv.querySelectorAll('.quick-reply').forEach(reply => {
+                    reply.addEventListener('click', () => {
+                        handleUserMessage(reply.dataset.reply);
+                    });
+                });
+            }
+            
+            // Handle user message
+            function handleUserMessage(message) {
+                if (!message.trim()) return;
+                
+                // Add user message
+                addMessage(message, true);
+                
+                // Clear input
+                chatInput.value = '';
+                
+                // Process message and generate response
+                setTimeout(() => generateResponse(message.toLowerCase()), 500);
+            }
+            
+            // Generate bot response based on user message
+            function generateResponse(userMessage) {
+                let response;
+                
+                if (userMessage.includes('hello') || userMessage.includes('hi') || userMessage.includes('hey')) {
+                    response = responses.greetings[Math.floor(Math.random() * responses.greetings.length)];
+                } else if (userMessage.includes('product') || userMessage.includes('model') || userMessage.includes('device')) {
+                    response = responses.products[Math.floor(Math.random() * responses.products.length)];
+                } else if (userMessage.includes('price') || userMessage.includes('cost') || userMessage.includes('discount')) {
+                    response = responses.pricing[Math.floor(Math.random() * responses.pricing.length)];
+                } else if (userMessage.includes('install') || userMessage.includes('setup') || userMessage.includes('mount')) {
+                    response = responses.installation[Math.floor(Math.random() * responses.installation.length)];
+                } else if (userMessage.includes('support') || userMessage.includes('help') || userMessage.includes('issue')) {
+                    response = responses.support[Math.floor(Math.random() * responses.support.length)];
+                } else if (userMessage.includes('thank') || userMessage.includes('thanks')) {
+                    response = "You're welcome! 😊 Is there anything else I can help you with regarding SenseFlow products?";
+                } else {
+                    response = responses.default[Math.floor(Math.random() * responses.default.length)];
+                }
+                
+                addBotMessage(response);
+            }
+            
+            // Event Listeners
+            whatsappButton.addEventListener('click', toggleChat);
+            closeChat.addEventListener('click', () => {
+                isChatOpen = false;
+                whatsappChat.classList.remove('active');
+            });
+            
+            sendButton.addEventListener('click', () => {
+                if (chatInput.value.trim()) {
+                    handleUserMessage(chatInput.value.trim());
+                }
+            });
+            
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && chatInput.value.trim()) {
+                    handleUserMessage(chatInput.value.trim());
+                }
+            });
+            
+            // Close chat when clicking outside
+            document.addEventListener('click', (e) => {
+                if (isChatOpen && 
+                    !whatsappChat.contains(e.target) && 
+                    !whatsappButton.contains(e.target)) {
+                    isChatOpen = false;
+                    whatsappChat.classList.remove('active');
+                }
+            });
+            
+            // Auto-open chat on page load after delay
+            setTimeout(() => {
+                if (!window.chatOpenedBefore && Math.random() > 0.7) {
+                    toggleChat();
+                }
+            }, 10000);
+        }
+
         // Theme Management
         function initTheme() {
             const themeToggle = document.getElementById('themeToggle');
@@ -1909,6 +2530,7 @@
 
         // Initialize everything when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
+            initWhatsAppChat();
             initTheme();
             initMobileMenu();
             initProductImageNavigation();
